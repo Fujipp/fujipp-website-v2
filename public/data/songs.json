@@ -1,0 +1,92 @@
+[
+    {
+      "id": 1,
+      "title": "Sex and Float",
+      "artist": "Percy",
+      "cover": "/data/covers/sex-and-float.jpg",
+      "file": "/data/music/Percy -Sex and Float W Naphat (OFFICIAL AUDIO).mp3",
+      "link": "https://www.youtube.com/watch?v=SCgLScrZ-6g"
+    },
+    {
+      "id": 2,
+      "title": "Shall we",
+      "artist": "Percy",
+      "cover": "/data/covers/shall-we.jpg",
+      "file": "/data/music/Percy - Shall we feat. 4ourYou & GENA DESOUZA  (Official Lyrics Video).mp3",
+      "link": "https://www.youtube.com/watch?v=erLvLQF6ROQ"
+    },
+    {
+      "id": 3,
+      "title": "N33d you",
+      "artist": "Kennocha",
+      "cover": "/data/covers/n33d-you.jpg",
+      "file": "/data/music/N33d you (feat. Naphat).mp3",
+      "link": "https://www.youtube.com/watch?v=Shvv3hnL1Ro"
+    },
+    {
+        "id": 4,
+        "title": "ซูลูปาก้า ตาปาเฮ้",
+        "artist": "themoonwillalwaysbewithme",
+        "cover": "/data/covers/ซูลูปาก้า-ตาปาเฮ้.jpg",
+        "file": "/data/music/ซูลูปาก้า ตาปาเฮ้ - themoonwillalwaysbewithme official audio.mp3",
+        "link": "https://www.youtube.com/watch?v=guCCAF-fkNI"
+    },
+    {
+        "id": 5,
+        "title": "Therapist (Remix)",
+        "artist": "PUN · Percy",
+        "cover": "/data/covers/therapist-(remix).jpg",
+        "file": "/data/music/Therapist (Remix).mp3",
+        "link": "https://www.youtube.com/watch?v=HqN54_GIJiU"
+    },
+    {
+        "id": 6,
+        "title": "MUSE",
+        "artist": "PUN · DAVII",
+        "cover": "/data/covers/muse.jpg",
+        "file": "/data/music/PUN Ft. DAVII - MUSE [Official MV].mp3",
+        "link": "https://www.youtube.com/watch?v=u9oTaiDam5o"
+    },
+    {
+        "id": 7,
+        "title": "Sunkissed",
+        "artist": "URWORLD",
+        "cover": "/data/covers/sunkissed.jpeg",
+        "file": "/data/music/Sunkissed.mp3",
+        "link": "https://www.youtube.com/watch?v=taaT4pC-jnc&list=RDMMWIWnJMFIKo0&index=25"
+    },
+    {
+        "id": 8,
+        "title": "why? (lada)",
+        "artist": "Baby Boat",
+        "cover": "/data/covers/whylada.jpg",
+        "file": "/data/music/why_ (lada) ft.Teng x Ge x 2Ectasy.mp3",
+        "link": "https://www.youtube.com/watch?v=WIWnJMFIKo0&list=RDWIWnJMFIKo0&index=1"
+    },
+    {
+        "id": 9,
+        "title": "ดาวหางฮัลเลย์",
+        "artist": "fellowfellowband",
+        "cover": "/data/covers/fellow fellow .png",
+        "file": "/data/music/fellow fellow - ดาวหางฮลเลย (Halley's Comet) [OFFICIAL VISUALIZER].mp3",
+        "link": "https://www.youtube.com/watch?v=WtcKJtwMD2E&list=RDMMWIWnJMFIKo0&index=27"
+    }
+    ,
+    {
+        "id": 10,
+        "title": "Kiss for luv",
+        "artist": "Kennocha",
+        "cover": "/data/covers/Kennocha.jpg",
+        "file": "/data/music/Kiss for luv.mp3",
+        "link": "https://www.youtube.com/watch?v=rHRLt-0t5bo&list=RDWIWnJMFIKo0&index=10"
+    },
+    {
+      "id": 11,
+      "title": "Shall we",
+      "artist": "Percy",
+      "cover": "/data/covers/shall-we.jpg",
+      "file": "/data/music/Percy - Shall We (instrumental).mp3",
+      "link": "https://www.youtube.com/watch?v=erLvLQF6ROQ"
+    }
+  ]
+  
