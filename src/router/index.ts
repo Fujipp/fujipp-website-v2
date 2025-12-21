@@ -9,7 +9,7 @@ const Home = () => import('@/views/Home.vue');
 // const About = () => import('@/views/About.vue'); // สำหรับเปิดใช้งานจริงในอนาคต
 // const Projects = () => import('@/views/Projects.vue');
 // const Contact = () => import('@/views/Contact.vue');
-// const Performance = () => import('@/views/Performance.vue');
+const Performance = () => import('@/views/Performance.vue');
 
 const routes: RouteRecordRaw[] = [
   {
@@ -43,8 +43,8 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'performance',
         name: 'Performance',
-        component: Maintenance,
-        meta: { title: 'Performance' }, // ตัวอย่างที่ล็อกไว้
+        component: Performance,
+        meta: { title: 'Performance' },
       },
     ],
   },

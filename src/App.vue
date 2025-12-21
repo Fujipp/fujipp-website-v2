@@ -1,44 +1,65 @@
 <template>
   <RouterView />
   <Background />
+  <!-- Hidden YouTube Player - persists across routes -->
+  <div id="global-youtube-player" class="youtube-player-container"></div>
+  <ToastPlayer />
 </template>
 
 <script setup lang="ts">
-  import Background from './components/Background.vue';
-  import { useThemeStore } from '@/stores/themeStore';
-  useThemeStore().loadTheme();
+import { onMounted } from 'vue';
+import Background from './components/Background.vue';
+import ToastPlayer from './components/music/ToastPlayer.vue';
+import { useThemeStore } from '@/stores/themeStore';
+import { useAudioStore } from '@/stores/audioStore';
+
+useThemeStore().loadTheme();
+
+const audioStore = useAudioStore();
+
+onMounted(async () => {
+  await audioStore.fetchSongs();
+  await audioStore.initPlayer('global-youtube-player');
+});
 </script>
 
 <style>
-  /* global.css หรือใน <style> global */
-  :root,
-  html,
-  body {
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease,
-      border-color 0.3s ease,
-      fill 0.3s ease;
-  }
+/* global.css หรือใน <style> global */
+:root,
+html,
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    fill 0.3s ease;
+}
 
-  html {
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
-    font-family: 'Kanit', sans-serif;
-  }
+html {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: 'Kanit', sans-serif;
+}
 
-  body {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
 
-  img {
-    img {
-      -webkit-user-drag: none;
-    }
+img {
+  -webkit-user-drag: none;
+}
 
-    -webkit-user-drag: none;
-  }
+/* Hidden YouTube player */
+.youtube-player-container {
+  position: fixed;
+  bottom: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 </style>

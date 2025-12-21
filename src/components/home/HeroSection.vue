@@ -14,14 +14,14 @@
 
   <section class="relative w-full h-screen overflow-hidden">
     <!-- ภาพพื้นหลังแบบ fade -->
-    <transition name="fade" mode="out-in">
+    <!-- <transition name="fade" mode="out-in">
       <img
         :src="slides[currentIndex].url"
         :key="slides[currentIndex].url"
         class="absolute inset-0 w-full h-full object-cover"
         alt="background"
       />
-    </transition>
+    </transition> -->
 
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black/50 z-10"></div>

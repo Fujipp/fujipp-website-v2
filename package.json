@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.21",
+    "@types/youtube": "^0.1.2",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "prettier": "^3.5.3",
