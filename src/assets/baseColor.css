@@ -29,3 +29,19 @@
   --color-error: #ff8a80;
   --color-accent: #f87171;
 }
+
+.christmas {
+  /* Christmas Theme 🎄 */
+  --color-primary: #c41e3a;
+  --color-primary-light: #ff6b6b;
+  --color-secondary: #228b22;
+  --color-background: #0a1f0a;
+  --color-surface: #1a2f1a;
+  --color-text-primary: #f5f5dc;
+  --color-text-secondary: #98d98e;
+  --color-divider: #2d4a2d;
+  --color-success: #228b22;
+  --color-warning: #ffd700;
+  --color-error: #c41e3a;
+  --color-accent: #ffd700;
+}

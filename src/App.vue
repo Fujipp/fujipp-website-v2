@@ -1,4 +1,5 @@
 <template>
+  <SnowEffect />
   <RouterView />
   <Background />
   <!-- Hidden YouTube Player - persists across routes -->
@@ -10,6 +11,7 @@
 import { onMounted } from 'vue';
 import Background from './components/Background.vue';
 import ToastPlayer from './components/music/ToastPlayer.vue';
+import SnowEffect from './components/SnowEffect.vue';
 import { useThemeStore } from '@/stores/themeStore';
 import { useAudioStore } from '@/stores/audioStore';
 
@@ -24,15 +26,29 @@ onMounted(async () => {
 </script>
 
 <style>
-/* global.css หรือใน <style> global */
+/* Global Theme Transitions */
 :root,
 html,
-body {
+body,
+*::before,
+*::after {
   transition:
     background-color 0.3s ease,
     color 0.3s ease,
     border-color 0.3s ease,
-    fill 0.3s ease;
+    fill 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* About page specific transitions */
+.about-page,
+.about-page * {
+  transition:
+    background-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 html {
@@ -61,5 +77,15 @@ img {
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+/* Hide Scrollbar - Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide Scrollbar - Firefox */
+* {
+  scrollbar-width: none;
 }
 </style>

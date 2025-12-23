@@ -6,7 +6,7 @@ import NotFound from '@/views/NotFound.vue';
 import Maintenance from '@/views/Maintenance.vue';
 
 const Home = () => import('@/views/Home.vue');
-// const About = () => import('@/views/About.vue'); // สำหรับเปิดใช้งานจริงในอนาคต
+const About = () => import('@/views/About.vue');
 // const Projects = () => import('@/views/Projects.vue');
 // const Contact = () => import('@/views/Contact.vue');
 const Performance = () => import('@/views/Performance.vue');
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'about',
         name: 'About',
-        component: Maintenance,
+        component: About,
         meta: { title: 'About Me' },
       },
       {
@@ -45,6 +45,12 @@ const routes: RouteRecordRaw[] = [
         name: 'Performance',
         component: Performance,
         meta: { title: 'Performance' },
+      },
+      {
+        path: 'songconfig',
+        name: 'SongConfig',
+        component: () => import('@/views/SongConfig.vue'),
+        meta: { title: 'Song Config' },
       },
     ],
   },

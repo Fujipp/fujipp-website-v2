@@ -12,7 +12,7 @@
           </div>
           <div>
             <h2 class="header-title">Music Station</h2>
-            <p class="header-subtitle">เพลงที่ชอบฟัง</p>
+            <p class="header-subtitle">My favorite songs</p>
           </div>
         </div>
         <div class="search-wrapper">
@@ -20,7 +20,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="ค้นหาเพลง..."
+            placeholder="Search songs..."
             class="search-input"
           />
         </div>
@@ -284,8 +284,8 @@ const toggleMute = () => {
 
 <style scoped>
 .music-section {
-  min-height: 100vh;
-  padding: 6rem 1rem;
+  min-height: auto;
+  padding: 4rem 1.5rem;
   background: linear-gradient(135deg, 
     var(--color-background) 0%, 
     color-mix(in srgb, var(--color-primary) 8%, var(--color-background)) 50%,
@@ -914,5 +914,198 @@ const toggleMute = () => {
 .favorite-btn.active {
   color: var(--color-accent);
   opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .music-section {
+    padding: 2rem 0.75rem;
+  }
+
+  .music-container {
+    max-width: 100%;
+  }
+
+  .music-header {
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .header-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.625rem;
+  }
+
+  .header-title {
+    font-size: 1.35rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .search-wrapper {
+    max-width: 100%;
+  }
+
+  .search-input {
+    padding: 0.6rem 0.875rem 0.6rem 2.5rem;
+    font-size: 0.8rem;
+  }
+
+  .search-icon {
+    left: 0.75rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .music-content {
+    gap: 1.5rem;
+  }
+
+  .video-wrapper {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .video-container {
+    border-radius: 1rem;
+    aspect-ratio: 1;
+  }
+
+  .song-info {
+    padding: 0 0.5rem;
+  }
+
+  .song-title {
+    font-size: 1rem;
+  }
+
+  .song-artist {
+    font-size: 0.8rem;
+  }
+
+  .progress-section {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .controls-section {
+    gap: 0.4rem;
+  }
+
+  .control-btn-main {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .control-btn-main svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .control-btn {
+    padding: 0.4rem;
+  }
+
+  .control-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .control-btn-sm {
+    padding: 0.35rem;
+  }
+
+  .control-btn-sm svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .volume-section {
+    max-width: 160px;
+    gap: 0.5rem;
+  }
+
+  .volume-text {
+    font-size: 0.65rem;
+    min-width: 2rem;
+  }
+
+  .playlist-section {
+    padding: 0.875rem;
+    border-radius: 1rem;
+    max-height: 300px;
+  }
+
+  .playlist-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .playlist-title {
+    font-size: 0.9rem;
+  }
+
+  .playlist-count {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .playlist-item {
+    padding: 0.375rem;
+    gap: 0.5rem;
+  }
+
+  .playlist-item-cover {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.375rem;
+  }
+
+  .playlist-item-title {
+    font-size: 0.75rem;
+  }
+
+  .playlist-item-artist {
+    font-size: 0.65rem;
+  }
+
+  .favorite-btn {
+    padding: 0.25rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .music-section {
+    padding: 3rem 1rem;
+  }
+
+  .video-wrapper {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .playlist-section {
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .music-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .video-wrapper {
+    max-width: 400px;
+  }
+}
+
+/* Prevent horizontal overflow */
+.music-section,
+.music-container {
+  max-width: 100vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 </style>

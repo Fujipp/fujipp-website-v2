@@ -1,16 +1,18 @@
 {
   "name": "personalwebsite",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/update-version.js",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.7",
+    "@types/three": "^0.182.0",
     "@vueuse/core": "^13.2.0",
     "animate.css": "^4.1.1",
     "lottie-web": "^5.13.0",
@@ -19,6 +21,7 @@
     "pinia": "^3.0.2",
     "swiper": "^11.2.8",
     "tailwindcss": "^4.1.7",
+    "three": "^0.182.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1",
     "vue-typed-js": "^0.1.2",

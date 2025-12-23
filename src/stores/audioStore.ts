@@ -27,12 +27,17 @@ export const useAudioStore = defineStore('audio', () => {
   const isReady = ref(false);
   const currentTime = ref(0);
   const duration = ref(0);
-  const volume = ref(100);
+  const volume = ref(loadVolumeFromStorage());
 
   let player: YT.Player | null = null;
   let timeUpdateInterval: number | null = null;
 
   const currentSong = computed(() => songs.value[currentSongIndex.value] || null);
+
+  function loadVolumeFromStorage(): number {
+    const saved = localStorage.getItem('audioVolume');
+    return saved !== null ? Number(saved) : 100;
+  }
 
   const getThumbnail = (videoId: string) => {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -240,6 +245,7 @@ export const useAudioStore = defineStore('audio', () => {
 
   const setVolume = (value: number) => {
     volume.value = Math.min(100, Math.max(0, value));
+    localStorage.setItem('audioVolume', volume.value.toString());
     if (player && typeof player.setVolume === 'function') {
       player.setVolume(volume.value);
     }

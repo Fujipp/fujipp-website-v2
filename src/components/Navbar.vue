@@ -48,8 +48,16 @@
           </RouterLink>
         </nav>
 
-        <!-- Right: Theme Switcher -->
-        <div class="transition">
+        <!-- Right: Snow Toggle + Theme Switcher -->
+        <div class="flex items-center gap-2 transition">
+          <button 
+            @click="snowStore.togglePanel" 
+            class="snow-btn flex items-center gap-1 transition cursor-pointer hover:opacity-80"
+            :style="{ color: 'var(--color-text-secondary)' }"
+            title="Snow Settings"
+          >
+            <Snowflake class="w-5 h-5" />
+          </button>
           <ThemeSwitcher />
         </div>
       </div>
@@ -59,12 +67,14 @@
 
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue';
-  import { Menu } from 'lucide-vue-next';
+  import { Menu, Snowflake } from 'lucide-vue-next';
   import ThemeSwitcher from './ThemeSwitcher.vue';
+  import { useSnowStore } from '@/stores/snowStore';
 
   // รับค่า isSidebarOpen จากภายนอก
   const props = defineProps<{ isSidebarOpen: boolean }>();
   const emit = defineEmits<{ (e: 'toggle'): void }>();
+  const snowStore = useSnowStore();
 
   const navLinks = [
     { label: 'HOME', path: '/' },

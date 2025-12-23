@@ -58,24 +58,36 @@ onMounted(() => {
   }
 });
 
+// Track if music was started
 watch(
   () => audioStore.isPlaying,
   (playing) => {
-    if (playing && route.path === '/') {
+    if (playing && route.path === '/about') {
       wasStartedOnHome.value = true;
       showToast.value = false;
     }
   }
 );
 
+// Show toast when not on about page and music is playing
 watch(
   () => route.path,
   (path) => {
     showToast.value =
-      path !== '/' &&
+      path !== '/about' &&
       path !== '/not-found' &&
       wasStartedOnHome.value &&
       audioStore.isPlaying;
+  }
+);
+
+// Also watch isPlaying to update toast visibility
+watch(
+  () => audioStore.isPlaying,
+  (playing) => {
+    if (route.path !== '/about') {
+      showToast.value = wasStartedOnHome.value && playing;
+    }
   }
 );
 
@@ -92,8 +104,8 @@ const closeToast = () => {
 };
 
 const goToHomeMusic = async () => {
-  if (route.path !== '/') {
-    await router.push({ path: '/', hash: '#music-section' });
+  if (route.path !== '/about') {
+    await router.push({ path: '/about', hash: '#music-section' });
     setTimeout(scrollToSection, 300);
   } else {
     scrollToSection();

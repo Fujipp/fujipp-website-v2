@@ -29,10 +29,26 @@
             </div>
           </div>
         </div>
-        <button @click="refreshMetrics" class="refresh-btn">
-          <ArrowPathIcon class="w-4 h-4" />
-          Refresh Metrics
-        </button>
+      </section>
+
+      <!-- Infrastructure Section -->
+      <section class="infra-section">
+        <h2 class="section-title">
+          <ServerStackIcon class="w-5 h-5" />
+          Infrastructure
+        </h2>
+        <div class="infra-grid">
+          <div v-for="infra in infrastructure" :key="infra.name" class="infra-card">
+            <div class="infra-icon" :style="{ background: infra.color }">
+              <component :is="infra.icon" class="w-6 h-6" />
+            </div>
+            <div class="infra-content">
+              <h3 class="infra-name">{{ infra.name }}</h3>
+              <p class="infra-provider">{{ infra.provider }}</p>
+              <p class="infra-desc">{{ infra.description }}</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Tech Stack Section -->
@@ -86,18 +102,66 @@
           </div>
         </div>
       </section>
+
+      <!-- Version & Build Info -->
+      <section class="version-section">
+        <h2 class="section-title">
+          <TagIcon class="w-5 h-5" />
+          Version & Build
+        </h2>
+        <div class="version-grid">
+          <div class="version-card">
+            <span class="version-label">App Version</span>
+            <span class="version-value">v1.0.0</span>
+          </div>
+          <div class="version-card">
+            <span class="version-label">Build Date</span>
+            <span class="version-value">{{ buildDate }}</span>
+          </div>
+          <div class="version-card">
+            <span class="version-label">Node.js</span>
+            <span class="version-value">v22.x LTS</span>
+          </div>
+          <div class="version-card">
+            <span class="version-label">Package Manager</span>
+            <span class="version-value">npm v10.x</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Copyright Section -->
+      <section class="copyright-section">
+        <div class="copyright-card">
+          <div class="copyright-header">
+            <ShieldCheckIcon class="w-6 h-6" />
+            <h3>Copyright & Legal</h3>
+          </div>
+          <div class="copyright-content">
+            <p class="copyright-text">
+              © {{ currentYear }} Fujipp. All rights reserved.
+            </p>
+            <p class="copyright-desc">
+              This website and its content are the property of Fujipp. 
+              Unauthorized use, reproduction, or distribution is prohibited.
+            </p>
+            <div class="copyright-links">
+              <a href="#" class="copyright-link">Privacy Policy</a>
+              <a href="#" class="copyright-link">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, markRaw, type Component } from 'vue';
+import { ref, onMounted, onUnmounted, markRaw, type Component } from 'vue';
 import {
   ChartBarIcon,
   ClockIcon,
   CpuChipIcon,
   GlobeAltIcon,
-  ArrowPathIcon,
   BoltIcon,
   DocumentIcon,
   PhotoIcon,
@@ -106,6 +170,10 @@ import {
   PaintBrushIcon,
   CubeIcon,
   MusicalNoteIcon,
+  ServerStackIcon,
+  ShieldCheckIcon,
+  CloudIcon,
+  GlobeAmericasIcon,
 } from '@heroicons/vue/24/solid';
 
 interface Metric {
@@ -124,7 +192,21 @@ interface TechItem {
   icon?: Component;
 }
 
+interface InfraItem {
+  name: string;
+  provider: string;
+  description: string;
+  color: string;
+  icon: Component;
+}
+
 const metrics = ref<Metric[]>([]);
+const currentYear = new Date().getFullYear();
+const buildDate = new Date().toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 
 const browserInfo = ref({
   userAgent: '',
@@ -132,6 +214,37 @@ const browserInfo = ref({
   language: '',
   online: true,
 });
+
+const infrastructure: InfraItem[] = [
+  {
+    name: 'Hosting',
+    provider: 'Rukcom',
+    description: 'Thai Cloud Hosting Provider with high-performance servers',
+    color: 'linear-gradient(135deg, #ff6b6b, #ee5a5a)',
+    icon: markRaw(CloudIcon),
+  },
+  {
+    name: 'Domain',
+    provider: 'GoDaddy',
+    description: 'World-leading domain registrar and web services',
+    color: 'linear-gradient(135deg, #00a4a6, #00c389)',
+    icon: markRaw(GlobeAmericasIcon),
+  },
+  // {
+  //   name: 'CDN',
+  //   provider: 'Cloudflare',
+  //   description: 'Global content delivery network for fast loading',
+  //   color: 'linear-gradient(135deg, #f38020, #faad3f)',
+  //   icon: markRaw(ServerStackIcon),
+  // },
+  {
+    name: 'Source Control',
+    provider: 'GitHub',
+    description: 'Version control and collaboration platform',
+    color: 'linear-gradient(135deg, #6e5494, #8a63d2)',
+    icon: markRaw(CodeBracketIcon),
+  },
+];
 
 const techStack: TechItem[] = [
   {
@@ -184,24 +297,24 @@ const techStack: TechItem[] = [
     icon: markRaw(PaintBrushIcon),
   },
   {
-    name: 'Swiper',
-    version: 'v11.2.8',
-    description: 'Modern Touch Slider',
-    color: '#0080ff',
-    icon: markRaw(PhotoIcon),
+    name: 'Lucide Icons',
+    version: 'v0.468.0',
+    description: 'Simply Beautiful Icons',
+    color: '#f56565',
+    icon: markRaw(PaintBrushIcon),
   },
   {
-    name: 'Lottie',
-    version: 'v5.13.0',
-    description: 'Lightweight Animation Library',
-    color: '#00ddb3',
+    name: 'Three.js',
+    version: 'v0.137.0',
+    description: '3D Graphics Library',
+    color: '#000000',
     icon: markRaw(CubeIcon),
   },
   {
-    name: 'WaveSurfer.js',
-    version: 'v7.9.5',
-    description: 'Audio Waveform Visualization',
-    color: '#ff6b6b',
+    name: 'YouTube IFrame API',
+    version: 'v3',
+    description: 'Audio Streaming via YouTube',
+    color: '#ff0000',
     icon: markRaw(MusicalNoteIcon),
   },
 ];
@@ -264,10 +377,6 @@ const getPerformanceMetrics = (): Metric[] => {
   ];
 };
 
-const refreshMetrics = () => {
-  metrics.value = getPerformanceMetrics();
-};
-
 onMounted(() => {
   // Wait for page to fully load
   if (document.readyState === 'complete') {
@@ -280,6 +389,11 @@ onMounted(() => {
     });
   }
 
+  // Auto-refresh metrics every 10 seconds
+  const metricsInterval = setInterval(() => {
+    metrics.value = getPerformanceMetrics();
+  }, 10000);
+
   // Browser info
   browserInfo.value = {
     userAgent: navigator.userAgent.split(' ').slice(-3).join(' '),
@@ -290,6 +404,11 @@ onMounted(() => {
 
   window.addEventListener('online', () => (browserInfo.value.online = true));
   window.addEventListener('offline', () => (browserInfo.value.online = false));
+
+  // Cleanup interval on unmount
+  onUnmounted(() => {
+    clearInterval(metricsInterval);
+  });
 });
 </script>
 
@@ -297,7 +416,6 @@ onMounted(() => {
 .performance-page {
   min-height: 100vh;
   padding: 6rem 1rem 4rem;
-  /* background: var(--color-background); */
 }
 
 .performance-container {
@@ -411,18 +529,82 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: var(--color-primary);
-  color: var(--color-background);
-  border: none;
-  border-radius: 9999px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-divider);
+  border-radius: 0.5rem;
   font-weight: 500;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .refresh-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-primary) 40%, transparent);
+  background: var(--color-divider);
+}
+
+/* Infrastructure Section */
+.infra-section {
+  margin-bottom: 3rem;
+}
+
+.infra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.infra-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-divider);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.infra-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.infra-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.infra-content {
+  flex: 1;
+}
+
+.infra-name {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.infra-provider {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.infra-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
 }
 
 /* Tech Stack Section */
@@ -507,7 +689,7 @@ onMounted(() => {
 
 /* Browser Info */
 .browser-section {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .browser-info {
@@ -552,7 +734,244 @@ onMounted(() => {
   color: var(--color-success);
 }
 
+/* Version Section */
+.version-section {
+  margin-bottom: 3rem;
+}
+
+.version-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.version-card {
+  padding: 1.25rem;
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-divider);
+  border-radius: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.version-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+}
+
+.version-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.version-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Copyright Section */
+.copyright-section {
+  margin-bottom: 2rem;
+}
+
+.copyright-card {
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-divider);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.copyright-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-divider);
+  color: var(--color-primary);
+}
+
+.copyright-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.copyright-content {
+  text-align: center;
+}
+
+.copyright-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.copyright-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto 1rem;
+}
+
+.copyright-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.copyright-link {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.copyright-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
 /* Responsive */
+@media (max-width: 480px) {
+  .performance-page {
+    padding: 5rem 0.75rem 3rem;
+    overflow-x: hidden;
+  }
+
+  .performance-container {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .header-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .metrics-grid,
+  .infra-grid,
+  .tech-grid,
+  .version-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .metric-card,
+  .infra-card,
+  .tech-card,
+  .version-card {
+    padding: 1rem;
+  }
+
+  .metric-icon,
+  .infra-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .metric-value {
+    font-size: 1.25rem;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+  }
+
+  .infra-provider {
+    font-size: 1.1rem;
+  }
+
+  .tech-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tech-name {
+    font-size: 0.9rem;
+  }
+
+  .refresh-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1rem;
+  }
+
+  .browser-info {
+    padding: 1rem;
+  }
+
+  .browser-value {
+    font-size: 0.8rem;
+    word-break: break-word;
+  }
+
+  .version-value {
+    font-size: 1rem;
+  }
+
+  .copyright-card {
+    padding: 1rem;
+  }
+
+  .copyright-desc {
+    font-size: 0.75rem;
+  }
+
+  .copyright-links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .performance-page {
+    padding: 5rem 1rem 3rem;
+    overflow-x: hidden;
+  }
+
+  .metrics-grid,
+  .infra-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .version-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (min-width: 768px) {
   .browser-item {
     flex-direction: row;
@@ -565,4 +984,12 @@ onMounted(() => {
     max-width: 60%;
   }
 }
+
+/* Prevent horizontal overflow globally */
+.performance-page,
+.performance-container {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 </style>

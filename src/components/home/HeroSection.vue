@@ -14,14 +14,14 @@
 
   <section class="relative w-full h-screen overflow-hidden">
     <!-- ภาพพื้นหลังแบบ fade -->
-    <!-- <transition name="fade" mode="out-in">
+    <transition name="fade" mode="out-in">
       <img
         :src="slides[currentIndex].url"
         :key="slides[currentIndex].url"
         class="absolute inset-0 w-full h-full object-cover"
         alt="background"
       />
-    </transition> -->
+    </transition>
 
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black/50 z-10"></div>
@@ -53,15 +53,15 @@
 
   const slides = [
     {
-      url: '/users-Fuji_1.png',
+      url: 'https://images.pexels.com/photos/3408353/pexels-photo-3408353.jpeg',
       title: "Hi, I'm Dev Fuji",
     },
     {
-      url: '/users-Fuji_2.png',
+      url: 'https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg',
       title: 'Passionate Fullstack Developer',
     },
     {
-      url: '/users-Fuji_1.png',
+      url: 'https://images.pexels.com/photos/1367192/pexels-photo-1367192.jpeg',
       title: 'Vue & Tailwind Enthusiast',
     },
   ];
@@ -84,12 +84,12 @@
           // 'Turning coffee ☕ into quality frontend experience.',
           // 'I love transforming complex problems into elegant solutions.',
         ],
-        typeSpeed: 22, // 🐢 ช้าลง
+        typeSpeed: 22,
         backSpeed: 15,
         backDelay: 3000,
         loop: true,
-        showCursor: true,
-        cursorChar: '',
+        showCursor: false,
+        cursorChar: '|',
       });
     }
   });

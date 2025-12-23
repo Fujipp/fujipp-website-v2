@@ -1,7 +1,7 @@
 <template>
   <div ref="dropdownRef" class="relative">
     <button
-      @click="isOpen = !isOpen"
+      @click="toggleDropdown"
       class="flex items-center gap-2 transition cursor-pointer hover:opacity-80"
       :style="{ color: 'var(--color-text-secondary)' }"
     >
@@ -47,25 +47,36 @@
 <script setup lang="ts">
   import { ref, computed, onMounted } from 'vue';
   import { useThemeStore } from '@/stores/themeStore';
-  import { Sun, Moon, Monitor, ChevronDown } from 'lucide-vue-next';
+  import { useSnowStore } from '@/stores/snowStore';
+  import { Sun, Moon, Monitor, ChevronDown, TreePine } from 'lucide-vue-next';
   import { onClickOutside } from '@vueuse/core';
 
-  type ThemeOption = 'light' | 'dark' | 'system';
+  type ThemeOption = 'light' | 'dark' | 'system' | 'christmas';
   const dropdownRef = ref(null);
   const isOpen = ref(false);
   const hovered = ref<ThemeOption | null>(null);
 
   const themeStore = useThemeStore();
+  const snowStore = useSnowStore();
 
   const options = [
     { label: 'Light', value: 'light', icon: Sun },
     { label: 'Dark', value: 'dark', icon: Moon },
     { label: 'System', value: 'system', icon: Monitor },
+    { label: 'Christmas', value: 'christmas', icon: TreePine },
   ];
 
   const current = computed(() => {
     return options.find(o => o.value === themeStore.theme) || options[2];
   });
+
+  function toggleDropdown() {
+    // Close snow panel if open when theme dropdown is toggled
+    if (!isOpen.value && snowStore.showPanel) {
+      snowStore.showPanel = false;
+    }
+    isOpen.value = !isOpen.value;
+  }
 
   function setTheme(value: ThemeOption) {
     themeStore.setTheme(value);

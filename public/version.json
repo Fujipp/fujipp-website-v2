@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "buildDate": "2025-12-23T20:51:27.511Z",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2025-12-24",
+      "changes": [
+        "Initial release with Home, About, Performance pages",
+        "Added Music Player with YouTube integration",
+        "Added Song Config admin panel",
+        "Added Theme switcher with Christmas theme",
+        "Added Snow effect"
+      ]
+    }
+  ]
+}

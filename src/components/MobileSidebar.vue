@@ -3,20 +3,22 @@
   <transition name="slide">
     <aside
       v-show="isOpen"
-      class="fixed top-[52px] left-0 h-screen w-[80vw] max-w-xs bg-[var(--color-background)] z-[100] shadow-lg px-5 py-6 space-y-6 md:hidden flex flex-col"
+      class="fixed top-[52px] left-0 h-screen w-[80vw] max-w-xs bg-[var(--color-background)] z-[100] shadow-lg px-4 py-6 md:hidden flex flex-col"
       @click.stop="closeSidebar"
     >
       <!-- Section: FUJIPP MENU -->
       <div class="flex-1">
-        <nav class="space-y-3">
+        <p class="menu-title">MENU</p>
+        <nav class="nav-container">
           <RouterLink
             v-for="(link, i) in navLinks"
             :key="i"
             :to="link.path"
-            class="nav-link block font-medium text-base transition"
+            class="nav-link"
             @click="closeSidebar"
           >
-            {{ link.label }}
+            <component :is="link.icon" class="nav-icon" />
+            <span>{{ link.label }}</span>
           </RouterLink>
         </nav>
       </div>
@@ -35,6 +37,7 @@
 
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue';
+  import { Home, User, FolderKanban, Mail, Activity } from 'lucide-vue-next';
 
   const props = defineProps<{
     isOpen: boolean;
@@ -51,13 +54,13 @@
     emit('close'); // Close sidebar when clicked outside or on a link
   };
 
-  // Navigation links
+  // Navigation links with icons
   const navLinks = [
-    { label: 'HOME', path: '/' },
-    { label: 'ABOUT', path: '/about' },
-    { label: 'PROJECTS', path: '/projects' },
-    { label: 'CONTACT', path: '/contact' },
-    { label: 'PERFORMANCE', path: '/performance' },
+    { label: 'HOME', path: '/', icon: Home },
+    { label: 'ABOUT', path: '/about', icon: User },
+    { label: 'PROJECTS', path: '/projects', icon: FolderKanban },
+    { label: 'CONTACT', path: '/contact', icon: Mail },
+    { label: 'PERFORMANCE', path: '/performance', icon: Activity },
   ];
 
   // Handle window resize to detect screen size change
@@ -105,15 +108,69 @@
     transform: translateX(-100%);
   }
 
-  /* Navigation link styling */
-  .nav-link {
-    color: var(--color-text-primary);
-    transition: color 0.3s ease;
+  /* Menu Title */
+  .menu-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    padding-left: 0.5rem;
   }
 
-  /* Hover effect - change text color */
+  /* Navigation Container */
+  .nav-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Navigation link styling - Button-like */
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-divider);
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--color-text-secondary);
+    transition: color 0.2s ease;
+  }
+
+  /* Hover effect */
   .nav-link:hover {
-    color: var(--color-primary); /* สีเปลี่ยนเมื่อ hover */
-    cursor: pointer; /* เพิ่ม cursor pointer เมื่อ hover */
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    color: var(--color-background);
+    border-color: transparent;
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+
+  .nav-link:hover .nav-icon {
+    color: var(--color-background);
+  }
+
+  /* Active state - use exact-active to prevent "/" matching all routes */
+  .router-link-exact-active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    color: var(--color-background);
+    border-color: transparent;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+
+  .router-link-exact-active .nav-icon {
+    color: var(--color-background);
   }
 </style>
+
