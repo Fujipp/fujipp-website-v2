@@ -165,10 +165,26 @@ export const useAudioStore = defineStore('audio', () => {
     }
   };
 
+  let unsubscribeSongs: (() => void) | null = null;
+
   const fetchSongs = async () => {
     try {
-      const res = await fetch('/data/songs.json');
-      songs.value = await res.json();
+      // Load songs from Firestore only
+      const { db } = await import('@/lib/firebase');
+      const { collection, getDocs } = await import('firebase/firestore');
+
+      const snapshot = await getDocs(collection(db, 'songs'));
+      if (!snapshot.empty) {
+        const firestoreSongs: Song[] = [];
+        snapshot.forEach(doc => {
+          firestoreSongs.push(doc.data() as Song);
+        });
+        songs.value = firestoreSongs.sort((a, b) => a.id - b.id);
+        console.log('AudioStore: Songs loaded from Firestore:', songs.value.length);
+      } else {
+        console.log('AudioStore: No songs in Firestore');
+        songs.value = [];
+      }
 
       const savedIndex = localStorage.getItem('lastSongIndex');
       if (savedIndex !== null) {
@@ -178,7 +194,36 @@ export const useAudioStore = defineStore('audio', () => {
         }
       }
     } catch (err) {
-      console.error('Error loading songs:', err);
+      console.error('Error loading songs from Firestore:', err);
+      songs.value = [];
+    }
+  };
+
+  // Real-time listener for songs
+  const subscribeToSongs = async () => {
+    try {
+      const { db } = await import('@/lib/firebase');
+      const { collection, onSnapshot } = await import('firebase/firestore');
+
+      unsubscribeSongs = onSnapshot(collection(db, 'songs'), (snapshot) => {
+        const firestoreSongs: Song[] = [];
+        snapshot.forEach(doc => {
+          firestoreSongs.push(doc.data() as Song);
+        });
+        songs.value = firestoreSongs.sort((a, b) => a.id - b.id);
+        // Apply favorites from localStorage after loading songs
+        applyFavorites();
+        console.log('AudioStore: Real-time update -', songs.value.length, 'songs');
+      });
+    } catch (err) {
+      console.error('Error subscribing to songs:', err);
+    }
+  };
+
+  const unsubscribeFromSongs = () => {
+    if (unsubscribeSongs) {
+      unsubscribeSongs();
+      unsubscribeSongs = null;
     }
   };
 
@@ -259,9 +304,30 @@ export const useAudioStore = defineStore('audio', () => {
     isShuffle.value = !isShuffle.value;
   };
 
+  // Favorites - stored in localStorage
+  const loadFavorites = (): number[] => {
+    const saved = localStorage.getItem('favoriteSongs');
+    return saved ? JSON.parse(saved) : [];
+  };
+
+  const saveFavorites = () => {
+    const favoriteIds = songs.value.filter(s => s.favorite).map(s => s.id);
+    localStorage.setItem('favoriteSongs', JSON.stringify(favoriteIds));
+  };
+
+  const applyFavorites = () => {
+    const favoriteIds = loadFavorites();
+    songs.value.forEach(song => {
+      song.favorite = favoriteIds.includes(song.id);
+    });
+  };
+
   const toggleFavorite = (id: number) => {
     const song = songs.value.find((s) => s.id === id);
-    if (song) song.favorite = !song.favorite;
+    if (song) {
+      song.favorite = !song.favorite;
+      saveFavorites();
+    }
   };
 
   return {
@@ -278,6 +344,8 @@ export const useAudioStore = defineStore('audio', () => {
     volume,
     getThumbnail,
     fetchSongs,
+    subscribeToSongs,
+    unsubscribeFromSongs,
     initPlayer,
     playSong,
     pauseSong,

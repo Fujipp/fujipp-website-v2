@@ -52,29 +52,29 @@ const supporters = [
     role: 'Supporter' 
   },
   { 
-    name: 'Sarah Wilson', 
-    avatar: 'https://i.pravatar.cc/150?u=4',
-    role: 'Supporter' 
+    name: 'Empty', 
+    avatar: 'https://img5.pic.in.th/file/secure-sv1/Bear-icon.png',
+    role: 'Comming Soon' 
   },
   { 
-    name: 'Alex Brown', 
-    avatar: 'https://i.pravatar.cc/150?u=5',
-    role: 'Premium' 
+    name: 'Empty', 
+    avatar: 'https://img5.pic.in.th/file/secure-sv1/Bear-icon.png',
+    role: 'Comming Soon' 
   },
   { 
-    name: 'Emily Davis', 
-    avatar: 'https://i.pravatar.cc/150?u=6',
-    role: 'Supporter' 
+    name: 'Empty', 
+    avatar: 'https://img5.pic.in.th/file/secure-sv1/Bear-icon.png',
+    role: 'Comming Soon' 
   },
   { 
-    name: 'Alex Brown', 
-    avatar: 'https://i.pravatar.cc/150?u=5',
-    role: 'Premium' 
+    name: 'Empty', 
+    avatar: 'https://img5.pic.in.th/file/secure-sv1/Bear-icon.png',
+    role: 'Comming Soon' 
   },
   { 
-    name: 'Emily Davis', 
-    avatar: 'https://i.pravatar.cc/150?u=6',
-    role: 'Supporter' 
+    name: 'Empty', 
+    avatar: 'https://img5.pic.in.th/file/secure-sv1/Bear-icon.png',
+    role: 'Comming Soon' 
   }
 ];
 </script>

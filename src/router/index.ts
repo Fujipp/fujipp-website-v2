@@ -8,7 +8,7 @@ import Maintenance from '@/views/Maintenance.vue';
 const Home = () => import('@/views/Home.vue');
 const About = () => import('@/views/About.vue');
 // const Projects = () => import('@/views/Projects.vue');
-// const Contact = () => import('@/views/Contact.vue');
+const Contact = () => import('@/views/Contact.vue');
 const Performance = () => import('@/views/Performance.vue');
 
 const routes: RouteRecordRaw[] = [
@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'contact',
         name: 'Contact',
-        component: Maintenance,
+        component: Contact,
         meta: { title: 'Contact' },
       },
       {

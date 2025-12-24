@@ -112,7 +112,7 @@
         <div class="version-grid">
           <div class="version-card">
             <span class="version-label">App Version</span>
-            <span class="version-value">v1.0.0</span>
+            <span class="version-value">v1.0.9</span>
           </div>
           <div class="version-card">
             <span class="version-label">Build Date</span>
@@ -168,7 +168,6 @@ import {
   ServerIcon,
   CodeBracketIcon,
   PaintBrushIcon,
-  CubeIcon,
   MusicalNoteIcon,
   ServerStackIcon,
   ShieldCheckIcon,
@@ -276,6 +275,13 @@ const techStack: TechItem[] = [
     logo: 'https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg',
   },
   {
+    name: 'Firebase',
+    version: 'v11.x',
+    description: 'Cloud Database & Authentication',
+    color: '#ffca28',
+    logo: 'https://www.gstatic.com/mobilesdk/240501_mobilesdk/firebase_28dp.png',
+  },
+  {
     name: 'Pinia',
     version: 'v3.0.2',
     description: 'State Management for Vue',
@@ -298,17 +304,10 @@ const techStack: TechItem[] = [
   },
   {
     name: 'Lucide Icons',
-    version: 'v0.468.0',
+    version: 'v0.511.0',
     description: 'Simply Beautiful Icons',
     color: '#f56565',
     icon: markRaw(PaintBrushIcon),
-  },
-  {
-    name: 'Three.js',
-    version: 'v0.137.0',
-    description: '3D Graphics Library',
-    color: '#000000',
-    icon: markRaw(CubeIcon),
   },
   {
     name: 'YouTube IFrame API',

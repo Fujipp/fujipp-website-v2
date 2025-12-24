@@ -142,10 +142,10 @@
         <div class="export-section">
           <button @click="exportJson" class="export-btn">
             <Download class="w-4 h-4" />
-            Download songs.json
+            Download Backup
           </button>
           <p class="export-note">
-            Copy this to <code>/public/data/songs.json</code> to apply changes.
+            Export your songs as a backup file.
           </p>
         </div>
         
@@ -209,6 +209,13 @@ import {
   AlertCircle,
   Info
 } from 'lucide-vue-next';
+import { db } from '@/lib/firebase';
+import { 
+  collection, 
+  getDocs, 
+  doc, 
+  writeBatch 
+} from 'firebase/firestore';
 
 interface Song {
   id: number;
@@ -217,12 +224,15 @@ interface Song {
   videoId: string;
 }
 
-// Auth
-const VALID_USER_ID = 'Fujipp';
-const VALID_PASSWORD = 'FUJIPP_Fujipp_2003@00';
+interface AdminUser {
+  userId: string;
+  password: string;
+}
 
+// Auth
 const isAuthenticated = ref(false);
 const loginError = ref('');
+const isLoading = ref(false);
 const loginForm = ref({
   userId: '',
   password: ''
@@ -255,13 +265,38 @@ const toast = ref({
 const jsonPreview = computed(() => JSON.stringify(songs.value, null, 2));
 
 // Auth Methods
-function handleLogin() {
-  if (loginForm.value.userId === VALID_USER_ID && loginForm.value.password === VALID_PASSWORD) {
-    isAuthenticated.value = true;
-    loginError.value = '';
-    sessionStorage.setItem('songConfigAuth', 'true');
-  } else {
-    loginError.value = 'Invalid credentials. Please try again.';
+async function handleLogin() {
+  if (!loginForm.value.userId.trim() || !loginForm.value.password.trim()) {
+    loginError.value = 'Please enter User ID and Password';
+    return;
+  }
+  
+  isLoading.value = true;
+  loginError.value = '';
+  
+  try {
+    const snapshot = await getDocs(collection(db, 'admins'));
+    let authenticated = false;
+    
+    snapshot.forEach(docSnap => {
+      const admin = docSnap.data() as AdminUser;
+      if (admin.userId === loginForm.value.userId && admin.password === loginForm.value.password) {
+        authenticated = true;
+      }
+    });
+    
+    if (authenticated) {
+      isAuthenticated.value = true;
+      sessionStorage.setItem('songConfigAuth', 'true');
+      showToast('Login successful!', 'success');
+    } else {
+      loginError.value = 'Invalid credentials. Please try again.';
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    loginError.value = 'Failed to connect. Please try again.';
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -272,17 +307,36 @@ function logout() {
 }
 
 // CRUD Methods
-function addSong() {
+async function addSong() {
+  if (!songForm.value.title.trim() || !songForm.value.artist.trim() || !songForm.value.videoId.trim()) {
+    showToast('Please fill in all fields', 'error');
+    return;
+  }
+  
+  // Validate YouTube Video ID (basic check)
+  const videoIdPattern = /^[a-zA-Z0-9_-]{11}$/;
+  if (!videoIdPattern.test(songForm.value.videoId.trim())) {
+    showToast('Invalid YouTube Video ID format (should be 11 characters)', 'error');
+    return;
+  }
+  
   const newId = songs.value.length > 0 ? Math.max(...songs.value.map(s => s.id)) + 1 : 1;
   songs.value.push({
     id: newId,
-    title: songForm.value.title,
-    artist: songForm.value.artist,
-    videoId: songForm.value.videoId
+    title: songForm.value.title.trim(),
+    artist: songForm.value.artist.trim(),
+    videoId: songForm.value.videoId.trim()
   });
-  resetForm();
-  saveSongs();
-  showToast('Song added successfully!', 'success');
+  
+  const saved = await saveSongs();
+  if (saved) {
+    showToast('Song added successfully!', 'success');
+    resetForm();
+  } else {
+    // Remove the song if save failed
+    songs.value.pop();
+    showToast('Failed to save. Please try again.', 'error');
+  }
 }
 
 function editSong(song: Song) {
@@ -295,20 +349,36 @@ function editSong(song: Song) {
   showToast(`Editing "${song.title}"`, 'info');
 }
 
-function updateSong() {
+async function updateSong() {
   if (editingSong.value) {
+    if (!songForm.value.title.trim() || !songForm.value.artist.trim() || !songForm.value.videoId.trim()) {
+      showToast('Please fill in all fields', 'error');
+      return;
+    }
+    
+    const videoIdPattern = /^[a-zA-Z0-9_-]{11}$/;
+    if (!videoIdPattern.test(songForm.value.videoId.trim())) {
+      showToast('Invalid YouTube Video ID format', 'error');
+      return;
+    }
+    
     const index = songs.value.findIndex(s => s.id === editingSong.value!.id);
     if (index !== -1) {
       songs.value[index] = {
         ...songs.value[index],
-        title: songForm.value.title,
-        artist: songForm.value.artist,
-        videoId: songForm.value.videoId
+        title: songForm.value.title.trim(),
+        artist: songForm.value.artist.trim(),
+        videoId: songForm.value.videoId.trim()
       };
     }
-    showToast('Song updated successfully!', 'success');
-    cancelEdit();
-    saveSongs();
+    
+    const saved = await saveSongs();
+    if (saved) {
+      showToast('Song updated successfully!', 'success');
+      cancelEdit();
+    } else {
+      showToast('Failed to save. Please try again.', 'error');
+    }
   }
 }
 
@@ -320,11 +390,15 @@ function requestDelete(id: number, title: string) {
   showModal.value = true;
 }
 
-function confirmModal() {
+async function confirmModal() {
   if (modalType.value === 'delete' && pendingSongId.value !== null) {
     songs.value = songs.value.filter(s => s.id !== pendingSongId.value);
-    saveSongs();
-    showToast('Song deleted successfully!', 'success');
+    const saved = await saveSongs();
+    if (saved) {
+      showToast('Song deleted successfully!', 'success');
+    } else {
+      showToast('Failed to delete. Please try again.', 'error');
+    }
   }
   closeModal();
 }
@@ -351,55 +425,82 @@ function resetForm() {
   songForm.value = { title: '', artist: '', videoId: '' };
 }
 
-function saveSongs() {
-  localStorage.setItem('songConfigData', JSON.stringify(songs.value));
-}
+const SONGS_COLLECTION = 'songs';
 
-function loadSongs() {
-  const saved = localStorage.getItem('songConfigData');
-  if (saved) {
-    songs.value = JSON.parse(saved);
-  }
-}
-
-async function fetchOriginalSongs() {
+async function saveSongs(): Promise<boolean> {
   try {
-    const response = await fetch('/data/songs.json');
-    const data = await response.json();
-    songs.value = data;
-    saveSongs();
+    const batch = writeBatch(db);
+    
+    // Delete all existing docs first
+    const snapshot = await getDocs(collection(db, SONGS_COLLECTION));
+    snapshot.docs.forEach(d => {
+      batch.delete(d.ref);
+    });
+    
+    // Add all current songs
+    songs.value.forEach(song => {
+      const songRef = doc(db, SONGS_COLLECTION, song.id.toString());
+      batch.set(songRef, song);
+    });
+    
+    await batch.commit();
+    console.log('Songs saved to Firestore:', songs.value.length, 'songs');
+    return true;
   } catch (error) {
-    console.error('Failed to fetch songs:', error);
+    console.error('Firestore Error - Failed to save songs:', error);
+    return false;
   }
 }
+
+async function loadSongs(): Promise<boolean> {
+  try {
+    const snapshot = await getDocs(collection(db, SONGS_COLLECTION));
+    if (!snapshot.empty) {
+      const loadedSongs: Song[] = [];
+      snapshot.forEach(d => {
+        loadedSongs.push(d.data() as Song);
+      });
+      // Sort by id
+      songs.value = loadedSongs.sort((a, b) => a.id - b.id);
+      console.log('Songs loaded from Firestore:', songs.value.length, 'songs');
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error('Firestore Error - Failed to load songs:', error);
+    return false;
+  }
+}
+
+
 
 function exportJson() {
   const blob = new Blob([JSON.stringify(songs.value, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'songs.json';
+  a.download = 'songs_backup.json';
   a.click();
   URL.revokeObjectURL(url);
 }
 
 async function reloadSongs() {
-  localStorage.removeItem('songConfigData');
-  await fetchOriginalSongs();
+  // Reload from Firestore
+  await loadSongs();
+  showToast('Songs reloaded from cloud', 'info');
 }
 
-onMounted(() => {
+onMounted(async () => {
   // Check session auth
   if (sessionStorage.getItem('songConfigAuth') === 'true') {
     isAuthenticated.value = true;
   }
   
-  // Load songs
-  const saved = localStorage.getItem('songConfigData');
-  if (saved) {
-    loadSongs();
-  } else {
-    fetchOriginalSongs();
+  // Load songs from Firestore only
+  const loaded = await loadSongs();
+  if (!loaded) {
+    console.log('No songs in Firestore yet');
+    songs.value = [];
   }
 });
 </script>

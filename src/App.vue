@@ -20,7 +20,8 @@ useThemeStore().loadTheme();
 const audioStore = useAudioStore();
 
 onMounted(async () => {
-  await audioStore.fetchSongs();
+  // Use real-time subscription for songs
+  await audioStore.subscribeToSongs();
   await audioStore.initPlayer('global-youtube-player');
 });
 </script>

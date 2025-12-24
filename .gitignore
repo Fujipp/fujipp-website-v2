@@ -41,3 +41,11 @@ coverage
 # Temp files
 *.tmp
 *.temp
+
+# Server (local API - not needed for production)
+server/
+
+# Firebase
+.firebase/
+firebase-debug.log
+.firebaserc

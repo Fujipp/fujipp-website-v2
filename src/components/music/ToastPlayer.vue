@@ -58,7 +58,7 @@ onMounted(() => {
   }
 });
 
-// Track if music was started
+// Track if music was started - show toast once music is played
 watch(
   () => audioStore.isPlaying,
   (playing) => {
@@ -66,27 +66,22 @@ watch(
       wasStartedOnHome.value = true;
       showToast.value = false;
     }
+    // Keep toast visible even when paused (once it was shown)
+    if (playing && route.path !== '/about' && wasStartedOnHome.value) {
+      showToast.value = true;
+    }
   }
 );
 
-// Show toast when not on about page and music is playing
+// Show toast when not on about page
 watch(
   () => route.path,
   (path) => {
-    showToast.value =
-      path !== '/about' &&
-      path !== '/not-found' &&
-      wasStartedOnHome.value &&
-      audioStore.isPlaying;
-  }
-);
-
-// Also watch isPlaying to update toast visibility
-watch(
-  () => audioStore.isPlaying,
-  (playing) => {
-    if (route.path !== '/about') {
-      showToast.value = wasStartedOnHome.value && playing;
+    if (path === '/about' || path === '/not-found') {
+      showToast.value = false;
+    } else if (wasStartedOnHome.value) {
+      // Show toast when navigating away from about page (keep it visible even if paused)
+      showToast.value = true;
     }
   }
 );
@@ -101,6 +96,7 @@ const songThumbnail = computed(() => {
 const closeToast = () => {
   audioStore.stopAudio();
   showToast.value = false;
+  wasStartedOnHome.value = false; // Reset so toast doesn't show again until played
 };
 
 const goToHomeMusic = async () => {
