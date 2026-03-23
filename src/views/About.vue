@@ -7,7 +7,7 @@
     
     <!-- Section 2: Music + Education + Supporters -->
     <section class="content-section">
-      <MusicSection id="music-section" />
+      <MusicCardsSection />
       <EducationSection />
       <SupportersSection />
     </section>
@@ -18,7 +18,7 @@
 import AboutMeSection from '@/components/about/AboutMeSection.vue';
 import EducationSection from '@/components/about/EducationSection.vue';
 import SupportersSection from '@/components/about/SupportersSection.vue';
-import MusicSection from '@/components/home/MusicSection.vue';
+import MusicCardsSection from '@/components/about/MusicCardsSection.vue';
 </script>
 
 <style scoped>

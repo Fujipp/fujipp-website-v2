@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-type ThemeOption = 'light' | 'dark' | 'system' | 'christmas';
+type ThemeOption = 'light' | 'dark' | 'system';
 
 export const useThemeStore = defineStore('theme', () => {
   const theme = ref<ThemeOption>('system');
@@ -12,15 +12,11 @@ export const useThemeStore = defineStore('theme', () => {
     ).matches;
 
     // Remove all theme classes first
-    document.documentElement.classList.remove('dark', 'christmas');
+    document.documentElement.classList.remove('dark');
 
-    if (theme.value === 'christmas') {
-      document.documentElement.classList.add('christmas');
-    } else {
-      const isDark =
-        theme.value === 'system' ? prefersDark : theme.value === 'dark';
-      document.documentElement.classList.toggle('dark', isDark);
-    }
+    const isDark =
+      theme.value === 'system' ? prefersDark : theme.value === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
 
     document.documentElement.setAttribute('data-theme', theme.value);
   };

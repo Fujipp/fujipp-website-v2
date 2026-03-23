@@ -47,23 +47,20 @@
 <script setup lang="ts">
   import { ref, computed, onMounted } from 'vue';
   import { useThemeStore } from '@/stores/themeStore';
-  import { useSnowStore } from '@/stores/snowStore';
-  import { Sun, Moon, Monitor, ChevronDown, TreePine } from 'lucide-vue-next';
+  import { Sun, Moon, Monitor, ChevronDown } from 'lucide-vue-next';
   import { onClickOutside } from '@vueuse/core';
 
-  type ThemeOption = 'light' | 'dark' | 'system' | 'christmas';
+  type ThemeOption = 'light' | 'dark' | 'system';
   const dropdownRef = ref(null);
   const isOpen = ref(false);
   const hovered = ref<ThemeOption | null>(null);
 
   const themeStore = useThemeStore();
-  const snowStore = useSnowStore();
 
   const options = [
     { label: 'Light', value: 'light', icon: Sun },
     { label: 'Dark', value: 'dark', icon: Moon },
     { label: 'System', value: 'system', icon: Monitor },
-    { label: 'Christmas', value: 'christmas', icon: TreePine },
   ];
 
   const current = computed(() => {
@@ -71,10 +68,6 @@
   });
 
   function toggleDropdown() {
-    // Close snow panel if open when theme dropdown is toggled
-    if (!isOpen.value && snowStore.showPanel) {
-      snowStore.showPanel = false;
-    }
     isOpen.value = !isOpen.value;
   }
 

@@ -1,5 +1,4 @@
 <template>
-  <SnowEffect />
   <RouterView />
   <Background />
   <!-- Hidden YouTube Player - persists across routes -->
@@ -11,7 +10,6 @@
 import { onMounted } from 'vue';
 import Background from './components/Background.vue';
 import ToastPlayer from './components/music/ToastPlayer.vue';
-import SnowEffect from './components/SnowEffect.vue';
 import { useThemeStore } from '@/stores/themeStore';
 import { useAudioStore } from '@/stores/audioStore';
 
